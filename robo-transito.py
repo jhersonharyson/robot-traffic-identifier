@@ -13,7 +13,7 @@ def mostrar_inRange(img, mask):
     plt.show()
 
 
-imagem = "teste7.jpg"
+imagem = "teste9.jpg"
 
 img = cv2.imread(imagem)
 
@@ -82,28 +82,31 @@ print('% Vinho: ', (pixelsWine/total)*100)
 
 img = cv2.imread(imagem, 0)
 _, img = cv2.threshold(img, 110, 255, cv2.AGAST_FEATURE_DETECTOR_THRESHOLD)
-img = cv2.medianBlur(img, 5)
+img = cv2.medianBlur(img, 3) # cv2.bilateralFilter(img,20,150,150) # cv2.GaussianBlur(img, (3, 3), 3) #
 plt.imshow(img)
 plt.show()
 
 circles = cv2.HoughCircles(img,cv2.HOUGH_GRADIENT, 1, 20, param1=100, param2=10, minRadius=5, maxRadius=30) # Your code
 
-for i in circles[0, :]:
-    # draw the outer circle
-    cv2.circle(img, (i[0], i[1]), i[2], (0, 255, 0), 2)
-    # draw the center of the circle
-    cv2.circle(img, (i[0], i[1]), 2, (0, 0, 255), 3)
-plt.imshow(img)
-plt.show()
-
-
 print('%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%')
-total = pixelsGreen + pixelsOrange + pixelsRed + pixelsWine
 print('% Total de Marcadores: ')
 print('% Vias Bloqueadas: ')
 print('% Acidentes: ')
 print('% Trabalhadores: ')
-print('% Total: ', len(circles[0, :]))
+
+if circles is not None:
+    for i in circles[0, :]:
+        # draw the outer circle
+        cv2.circle(img, (i[0], i[1]), 10, (0, 255, 255), 2)
+        # draw the center of the circle
+        cv2.circle(img, (i[0], i[1]), 2, (255, 0, 0), 3)
+    plt.imshow(img)
+    plt.show()
+    print('% Total: ', len(circles[0, :]))
+else:
+    print('% Total: 0')
+
+
 
 '''
 import numpy as np
